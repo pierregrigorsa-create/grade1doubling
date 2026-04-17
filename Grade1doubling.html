@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)file:///C:/Users/pierr/Downloads/Grade1_Doubling_Balmoral_April2026%20(4).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Doubling with Miss Numby!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden}
+
+body{
+  background:linear-gradient(170deg,#FF6F00 0%,#FFA726 15%,#FFCC02 30%,#66BB6A 50%,#42A5F5 70%,#AB47BC 85%,#EC407A 100%);
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 8px 30px;position:relative;
+}
+
+/* ── FLOATING DECORATIONS ── */
+.float-deco{position:fixed;pointer-events:none;opacity:0.1;font-size:clamp(28px,6vw,55px);z-index:0;animation:floatAround 18s ease-in-out infinite}
+@keyframes floatAround{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-20px) rotate(8deg)}50%{transform:translateY(5px) rotate(-5deg)}75%{transform:translateY(-12px) rotate(3deg)}}
+
+/* ── PASSWORD SCREEN ── */
+#passwordScreen{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(170deg,#FF6F00 0%,#FFA726 15%,#FFCC02 30%,#66BB6A 50%,#42A5F5 70%,#AB47BC 85%,#EC407A 100%);
+  display:flex;align-items:center;justify-content:center;z-index:9999;
+}
+.pw-card{background:rgba(255,255,255,0.97);border-radius:24px;padding:36px 28px;max-width:380px;width:90%;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.2)}
+.pw-card h2{font-family:'Fredoka One',cursive;color:#E65100;font-size:22px;margin-bottom:6px}
+.pw-card p{font-weight:700;color:#5D4037;font-size:14px;margin-bottom:18px}
+.pw-input{width:80%;padding:14px;border:3px solid #FFA726;border-radius:14px;font-family:'Fredoka One',cursive;font-size:22px;text-align:center;color:#E65100;outline:none;transition:border-color 0.3s}
+.pw-input:focus{border-color:#FF6F00}
+.pw-btn{display:block;margin:16px auto 0;padding:12px 40px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:18px;color:white;cursor:pointer;background:linear-gradient(135deg,#43A047,#66BB6A);box-shadow:0 4px 16px rgba(67,160,71,0.4);transition:transform 0.2s}
+.pw-btn:hover{transform:scale(1.05)}
+.pw-error{color:#E53935;font-weight:800;font-size:13px;margin-top:10px;min-height:20px}
+
+/* ── MAIN CONTAINER ── */
+#app{width:100%;max-width:700px;position:relative;z-index:1;display:none}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#FF8F00,#FFB300);border-radius:20px;padding:14px 20px;margin-bottom:14px;text-align:center;box-shadow:0 6px 28px rgba(255,143,0,0.4)}
+.header h1{font-family:'Fredoka One',cursive;font-size:clamp(16px,3.5vw,24px);color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,0.2)}
+.header p{font-size:clamp(11px,2vw,14px);color:#FFF8E1;font-weight:700;margin-top:4px}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{height:10px;background:rgba(255,255,255,0.3);border-radius:50px;margin:10px 0 14px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,#FF8F00,#66BB6A);border-radius:50px;transition:width 0.8s ease;width:0%}
+
+/* ── PAUSE BUTTON ── */
+#pauseBtn{
+  position:fixed;bottom:20px;right:20px;z-index:1000;
+  width:60px;height:60px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,#E65100,#FF8F00);
+  color:white;font-size:24px;cursor:pointer;
+  box-shadow:0 6px 24px rgba(230,81,0,0.5);
+  transition:transform 0.2s;
+  display:none;
+}
+#pauseBtn:hover{transform:scale(1.1)}
+#pauseBtn.paused{background:linear-gradient(135deg,#2E7D32,#66BB6A);box-shadow:0 6px 24px rgba(46,125,50,0.5)}
+.pause-label{position:fixed;bottom:85px;right:12px;z-index:1000;font-family:'Fredoka One',cursive;font-size:11px;color:white;text-shadow:1px 1px 3px rgba(0,0,0,0.5);display:none;text-align:center;width:76px}
+
+/* ── SPEECH BUBBLE ── */
+.speech-area{background:linear-gradient(135deg,#FFF8E1,#FFF3C4);border:3px solid #FFB300;border-radius:8px 20px 20px 20px;padding:16px 20px;margin-bottom:14px;min-height:70px;box-shadow:0 4px 16px rgba(255,179,0,0.3)}
+.speech-label{font-family:'Fredoka One',cursive;font-size:12px;color:#FF8F00;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.speech-text{font-size:clamp(14px,2.2vw,17px);color:#3E2723;font-weight:700;line-height:1.7}
+
+/* ── ACTIVITY CARD ── */
+.activity-card{background:rgba(255,255,255,0.95);border-radius:20px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,0.1);margin-bottom:14px}
+.activity-title{font-family:'Fredoka One',cursive;font-size:clamp(15px,2.8vw,22px);color:#E65100;margin-bottom:16px;text-align:center;padding:8px 16px;background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-radius:12px}
+
+/* ── MISS NUMBY AVATAR ── */
+.numby-container{text-align:center;margin:10px 0}
+.numby-avatar{width:120px;height:120px;border-radius:50%;border:4px solid #FFB300;box-shadow:0 4px 16px rgba(255,179,0,0.4);overflow:hidden;margin:0 auto;background:#FFF3E0}
+
+/* ── DEMO AREA ── */
+.demo-area{text-align:center;padding:16px;min-height:180px}
+.hand-display{display:flex;justify-content:center;align-items:center;gap:20px;flex-wrap:wrap;margin:16px 0}
+.hand-card{background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border-radius:20px;padding:20px;min-width:120px;box-shadow:0 4px 16px rgba(33,150,243,0.2);transition:transform 0.5s,opacity 0.5s;text-align:center}
+.hand-card.appear{animation:popIn 0.6s ease}
+@keyframes popIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.hand-emoji{font-size:clamp(50px,12vw,80px);line-height:1.2}
+.hand-label{font-family:'Fredoka One',cursive;font-size:clamp(16px,3vw,22px);color:#1565C0;margin-top:8px}
+.equals-sign{font-family:'Fredoka One',cursive;font-size:clamp(30px,6vw,50px);color:#E65100;animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.result-number{font-family:'Fredoka One',cursive;font-size:clamp(40px,10vw,70px);color:#2E7D32;animation:popIn 0.6s ease}
+
+/* ── SWEETS DEMO ── */
+.sweets-demo{display:flex;justify-content:center;align-items:center;gap:16px;flex-wrap:wrap;margin:16px 0}
+.sweet-bag{background:linear-gradient(135deg,#CE93D8,#AB47BC);border-radius:16px;padding:16px 20px;box-shadow:0 4px 16px rgba(171,71,188,0.3);text-align:center;min-width:100px}
+.sweet-bag-label{font-family:'Fredoka One',cursive;font-size:14px;color:white;margin-top:6px}
+.sweet-icons{font-size:clamp(28px,6vw,40px)}
+.identical-arrow{font-family:'Fredoka One',cursive;font-size:clamp(24px,5vw,36px);color:#E65100}
+
+/* ── QUIZ ROWS ── */
+.quiz-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:10px 14px;background:linear-gradient(135deg,#FFF3E0,#FFE0B2);border-radius:14px;transition:background 0.3s}
+.quiz-row.correct{background:linear-gradient(135deg,#E8F5E9,#C8E6C9)}
+.quiz-row.wrong{background:linear-gradient(135deg,#FFEBEE,#FFCDD2)}
+.quiz-num{font-family:'Fredoka One',cursive;font-size:clamp(28px,6vw,40px);color:#E65100;min-width:40px;text-align:center}
+.quiz-label{font-family:'Fredoka One',cursive;font-size:clamp(14px,2.5vw,18px);color:#FF8F00}
+.quiz-input{width:clamp(55px,14vw,75px);height:clamp(55px,14vw,75px);border:3px dashed #FFA726;border-radius:14px;font-family:'Fredoka One',cursive;font-size:clamp(26px,5vw,38px);text-align:center;color:#E65100;background:white;outline:none;transition:all 0.3s}
+.quiz-input:focus{border-color:#FF6F00;background:#FFF8E1;transform:scale(1.05)}
+.quiz-input.correct{border-color:#43A047;background:#E8F5E9;color:#2E7D32}
+.quiz-input.wrong{border-color:#E53935;background:#FFEBEE;color:#C62828;animation:shake 0.4s ease}
+.quiz-input::-webkit-outer-spin-button,.quiz-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.quiz-input[type=number]{-moz-appearance:textfield}
+@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}100%{transform:translateX(0)}}
+
+.go-btn{width:clamp(44px,11vw,55px);height:clamp(44px,11vw,55px);border:none;border-radius:12px;background:linear-gradient(135deg,#43A047,#66BB6A);color:white;font-family:'Fredoka One',cursive;font-size:clamp(14px,3vw,18px);cursor:pointer;box-shadow:0 3px 10px rgba(67,160,71,0.3);transition:transform 0.15s;flex-shrink:0}
+.go-btn:hover{transform:scale(1.08)}
+.go-btn:disabled{opacity:0.3;cursor:default;transform:none}
+.try-again-hint{font-family:'Fredoka One',cursive;font-size:12px;color:#E53935;margin-top:4px;text-align:center}
+
+/* ── RESULTS ── */
+.results-card{background:rgba(255,255,255,0.97);border-radius:20px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.1);text-align:center}
+.results-card h2{font-family:'Fredoka One',cursive;font-size:clamp(20px,4vw,28px);color:#E65100;margin-bottom:12px}
+.score-display{font-family:'Fredoka One',cursive;font-size:clamp(36px,8vw,56px);color:#2E7D32;margin:16px 0}
+.results-detail{text-align:left;margin:16px 0;font-size:clamp(13px,2vw,16px);font-weight:700;color:#4E342E;line-height:1.8}
+.result-correct{color:#2E7D32}
+.result-wrong{color:#C62828}
+
+/* ── FEEDBACK CARD ── */
+.feedback-card{background:rgba(255,255,255,0.97);border-radius:20px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.1);margin-top:14px}
+.feedback-card h3{font-family:'Fredoka One',cursive;color:#E65100;font-size:18px;margin-bottom:14px;text-align:center}
+.fb-submit{display:block;margin:16px auto 0;padding:12px 40px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:16px;color:white;cursor:pointer;background:linear-gradient(135deg,#FF8F00,#FFB300);box-shadow:0 4px 16px rgba(255,179,0,0.4);transition:transform 0.2s}
+.fb-submit:hover{transform:scale(1.05)}
+
+/* ── START SCREEN ── */
+.start-screen{text-align:center;padding:20px}
+.start-btn{display:inline-block;margin-top:16px;padding:16px 48px;border:none;border-radius:50px;font-family:'Fredoka One',cursive;font-size:clamp(18px,3.5vw,24px);color:white;cursor:pointer;background:linear-gradient(135deg,#FF8F00,#FFB300);box-shadow:0 6px 24px rgba(255,143,0,0.5);transition:transform 0.2s;animation:pulse 2s ease-in-out infinite}
+.start-btn:hover{transform:scale(1.08)}
+
+/* ── SCENE MANAGEMENT ── */
+.scene{display:none}
+.scene.active{display:block}
+
+/* ── CONFETTI ── */
+.confetti-wrap{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+@keyframes confFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(105vh) rotate(720deg);opacity:0}}
+</style>
+<style>.driver-active .driver-overlay,.driver-active *{pointer-events:none}.driver-active .driver-active-element,.driver-active .driver-active-element *,.driver-popover,.driver-popover *{pointer-events:auto}@keyframes animate-fade-in{0%{opacity:0}to{opacity:1}}.driver-fade .driver-overlay{animation:animate-fade-in .2s ease-in-out}.driver-fade .driver-popover{animation:animate-fade-in .2s}.driver-popover{all:unset;box-sizing:border-box;color:#2d2d2d;margin:0;padding:15px;border-radius:5px;min-width:250px;max-width:300px;box-shadow:0 1px 10px rgba(0,0,0,.4);z-index:1000000000;position:fixed;top:0;right:0;background-color:#fff}.driver-popover *{font-family:Helvetica Neue,Inter,ui-sans-serif,"Apple Color Emoji",Helvetica,Arial,sans-serif}.driver-popover-title{font:19px/normal sans-serif;font-weight:700;display:block;position:relative;line-height:1.5;zoom:1;margin:0}.driver-popover-close-btn{all:unset;position:absolute;top:0;right:0;width:32px;height:28px;cursor:pointer;font-size:18px;font-weight:500;color:#d2d2d2;z-index:1;text-align:center;transition:color;transition-duration:.2s}.driver-popover-close-btn:hover,.driver-popover-close-btn:focus{color:#2d2d2d}.driver-popover-title[style*=block]+.driver-popover-description{margin-top:5px}.driver-popover-description{margin-bottom:0;font:14px/normal sans-serif;line-height:1.5;font-weight:400;zoom:1}.driver-popover-footer{margin-top:15px;text-align:right;zoom:1;display:flex;align-items:center;justify-content:space-between}.driver-popover-progress-text{font-size:13px;font-weight:400;color:#727272;zoom:1}.driver-popover-footer button{all:unset;display:inline-block;box-sizing:border-box;padding:3px 7px;text-decoration:none;text-shadow:1px 1px 0 #fff;background-color:#fff;color:#2d2d2d;font:12px/normal sans-serif;cursor:pointer;outline:0;zoom:1;line-height:1.3;border:1px solid #ccc;border-radius:3px}.driver-popover-footer .driver-popover-btn-disabled{opacity:.5;pointer-events:none}:not(body):has(>.driver-active-element){overflow:hidden !important}.driver-no-interaction,.driver-no-interaction *{pointer-events:none !important}.driver-popover-footer button:hover,.driver-popover-footer button:focus{background-color:#f7f7f7}.driver-popover-navigation-btns{display:flex;flex-grow:1;justify-content:flex-end}.driver-popover-navigation-btns button+button{margin-left:4px}.driver-popover-arrow{content:"";position:absolute;border:5px solid #fff}.driver-popover-arrow-side-over{display:none}.driver-popover-arrow-side-left{left:100%;border-right-color:transparent;border-bottom-color:transparent;border-top-color:transparent}.driver-popover-arrow-side-right{right:100%;border-left-color:transparent;border-bottom-color:transparent;border-top-color:transparent}.driver-popover-arrow-side-top{top:100%;border-right-color:transparent;border-bottom-color:transparent;border-left-color:transparent}.driver-popover-arrow-side-bottom{bottom:100%;border-left-color:transparent;border-top-color:transparent;border-right-color:transparent}.driver-popover-arrow-side-center{display:none}.driver-popover-arrow-side-left.driver-popover-arrow-align-start,.driver-popover-arrow-side-right.driver-popover-arrow-align-start{top:15px}.driver-popover-arrow-side-top.driver-popover-arrow-align-start,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-start{left:15px}.driver-popover-arrow-align-end.driver-popover-arrow-side-left,.driver-popover-arrow-align-end.driver-popover-arrow-side-right{bottom:15px}.driver-popover-arrow-side-top.driver-popover-arrow-align-end,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-end{right:15px}.driver-popover-arrow-side-left.driver-popover-arrow-align-center,.driver-popover-arrow-side-right.driver-popover-arrow-align-center{top:50%;margin-top:-5px}.driver-popover-arrow-side-top.driver-popover-arrow-align-center,.driver-popover-arrow-side-bottom.driver-popover-arrow-align-center{left:50%;margin-left:-5px}.driver-popover-arrow-none{display:none}</style></head>
+<body>
+
+<!-- Floating decorations -->
+<div class="float-deco" style="top:6%;left:4%;animation-delay:0s">🌈</div>
+<div class="float-deco" style="top:18%;right:6%;animation-delay:2s">🌟</div>
+<div class="float-deco" style="top:40%;left:3%;animation-delay:4s">🎈</div>
+<div class="float-deco" style="top:60%;right:5%;animation-delay:6s">🦋</div>
+<div class="float-deco" style="top:78%;left:8%;animation-delay:8s">🌻</div>
+<div class="float-deco" style="top:30%;right:10%;animation-delay:10s">🎯</div>
+
+<!-- PASSWORD SCREEN -->
+<div id="passwordScreen">
+  <div class="pw-card">
+    <div style="font-size:48px;margin-bottom:10px">🔒</div>
+    <h2>Akili Learning</h2>
+    <p>Grade 1 — Doubling<br><span style="font-size:12px;color:#888">Balmoral Primary — April 2026</span></p>
+    <input type="password" class="pw-input" id="pwInput" placeholder="Password" maxlength="20" autocomplete="off">
+    <button class="pw-btn" onclick="checkPassword()">Enter</button>
+    <div class="pw-error" id="pwError"></div>
+  </div>
+</div>
+
+<!-- PAUSE BUTTON -->
+<button id="pauseBtn" onclick="togglePause()">⏸️</button>
+<div class="pause-label" id="pauseLabel">Pause</div>
+
+<div id="app">
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Doubling with Miss Numby!</h1>
+    <p>Learn to double numbers using your hands!</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+  <!-- SPEECH BUBBLE -->
+  <div class="speech-area">
+    <div class="speech-label">Miss Numby says:</div>
+    <div class="speech-text" id="speechText">Getting ready...</div>
+  </div>
+
+  <!-- ═══ SCENE: START ═══ -->
+  <div class="scene active" id="scene-start">
+    <div class="activity-card start-screen">
+      <div class="numby-container">
+        <svg class="numby-avatar" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- Hair back -->
+          <ellipse cx="60" cy="52" rx="42" ry="40" fill="#6D4C41"></ellipse>
+          <!-- Hair long strands -->
+          <path d="M18,52 Q15,85 25,110" stroke="#6D4C41" stroke-width="12" fill="none" stroke-linecap="round"></path>
+          <path d="M102,52 Q105,85 95,110" stroke="#6D4C41" stroke-width="12" fill="none" stroke-linecap="round"></path>
+          <path d="M22,60 Q18,90 28,115" stroke="#5D4037" stroke-width="8" fill="none" stroke-linecap="round"></path>
+          <path d="M98,60 Q102,90 92,115" stroke="#5D4037" stroke-width="8" fill="none" stroke-linecap="round"></path>
+          <!-- Face -->
+          <ellipse cx="60" cy="58" rx="30" ry="32" fill="#FFCC80"></ellipse>
+          <!-- Eyes -->
+          <ellipse cx="48" cy="54" rx="4" ry="5" fill="#3E2723"></ellipse>
+          <ellipse cx="72" cy="54" rx="4" ry="5" fill="#3E2723"></ellipse>
+          <circle cx="49" cy="52" r="1.5" fill="white"></circle>
+          <circle cx="73" cy="52" r="1.5" fill="white"></circle>
+          <!-- Eyebrows -->
+          <path d="M42,47 Q48,43 54,47" stroke="#5D4037" stroke-width="2" fill="none"></path>
+          <path d="M66,47 Q72,43 78,47" stroke="#5D4037" stroke-width="2" fill="none"></path>
+          <!-- Smile -->
+          <path d="M47,68 Q60,80 73,68" stroke="#D84315" stroke-width="2.5" fill="#EF5350" stroke-linecap="round"></path>
+          <!-- Cheeks -->
+          <circle cx="38" cy="64" r="5" fill="#FFAB91" opacity="0.5"></circle>
+          <circle cx="82" cy="64" r="5" fill="#FFAB91" opacity="0.5"></circle>
+          <!-- Hair front/bangs -->
+          <path d="M30,42 Q40,25 60,22 Q80,25 90,42" stroke="#6D4C41" stroke-width="0" fill="#6D4C41"></path>
+          <path d="M32,44 Q42,30 55,28" stroke="#5D4037" stroke-width="3" fill="none" stroke-linecap="round"></path>
+          <path d="M88,44 Q78,30 65,28" stroke="#5D4037" stroke-width="3" fill="none" stroke-linecap="round"></path>
+          <!-- Body/dress top -->
+          <path d="M35,88 Q60,85 85,88 Q90,100 85,115 L35,115 Q30,100 35,88Z" fill="#AB47BC"></path>
+          <circle cx="60" cy="92" r="3" fill="#FFD54F"></circle>
+        </svg>
+      </div>
+      <h2 style="font-family:&#39;Fredoka One&#39;,cursive;color:#E65100;font-size:clamp(18px,3.5vw,24px);margin-top:10px">
+        I'm Miss Numby!
+      </h2>
+      <p style="font-weight:700;color:#5D4037;margin-top:10px;font-size:clamp(13px,2.2vw,16px);line-height:1.6">
+        Today we are going to learn about<br><strong style="color:#E65100;font-size:1.2em">DOUBLING!</strong><br>
+        Mommy or Daddy, please sit with your child.
+      </p>
+      <button class="start-btn" id="startBtn" onclick="beginLesson()">
+        Let's Start!
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══ SCENE: DEMO ═══ -->
+  <div class="scene" id="scene-demo">
+    <div class="activity-card">
+      <div class="activity-title" id="demoTitle">What is Doubling?</div>
+      <div class="demo-area" id="demoArea"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SCENE: QUIZ ═══ -->
+  <div class="scene" id="scene-quiz">
+    <div class="activity-card">
+      <div class="activity-title">Double these numbers!</div>
+      <p style="text-align:center;font-weight:700;color:#5D4037;margin-bottom:14px;font-size:clamp(12px,2vw,14px)">
+        Use your fingers to help you! Type the answer and press Go.
+      </p>
+      <div id="quizRows"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SCENE: RESULTS ═══ -->
+  <div class="scene" id="scene-results">
+    <div class="results-card">
+      <h2>Well done! You finished!</h2>
+      <div class="score-display" id="scoreDisplay"></div>
+      <div class="results-detail" id="resultsDetail"></div>
+      <div id="parentMessage" style="margin-top:18px;padding:16px;background:#FFF8E1;border-radius:14px;border:2px solid #FFB300;text-align:left;font-size:clamp(12px,2vw,15px);font-weight:700;color:#5D4037;line-height:1.7"></div>
+    </div>
+
+    <!-- FEEDBACK FORM -->
+    <div class="feedback-card">
+      <h3>Please Complete the Feedback Form</h3>
+      <p style="text-align:center;font-weight:700;color:#5D4037;font-size:14px;line-height:1.6;margin-bottom:16px">
+        Your feedback helps us improve Akili Learning.<br>The form takes about 1 minute.
+      </p>
+      <button class="fb-submit" onclick="openFeedbackForm()">Open Feedback Form</button>
+      <p style="text-align:center;font-weight:700;color:#888;font-size:11px;margin-top:12px">Opens in a new tab</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+// PASSWORD
+// ══════════════════════════════════════════════════════
+const MONTHLY_PASSWORD = "balmoral-april";
+
+function checkPassword(){
+  const input = document.getElementById('pwInput').value.trim().toLowerCase();
+  if(input === MONTHLY_PASSWORD){
+    document.getElementById('passwordScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initAfterPassword();
+  } else {
+    document.getElementById('pwError').textContent = 'Incorrect password. Please try again.';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key === 'Enter') checkPassword(); });
+  document.getElementById('pwInput').focus();
+});
+
+// ══════════════════════════════════════════════════════
+// FEEDBACK
+// ══════════════════════════════════════════════════════
+const FEEDBACK_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSemC5qB2ZsXff2tgfoZMYzE0MfcZwiUQNfiY0gveCGDHvD_RA/viewform";
+function openFeedbackForm(){ window.open(FEEDBACK_FORM_URL, '_blank'); }
+
+// ══════════════════════════════════════════════════════
+// SPEECH SYNTHESIS
+// ══════════════════════════════════════════════════════
+let voices = [];
+let selectedVoice = null;
+
+function loadVoices(){
+  return new Promise(resolve => {
+    const load = () => {
+      voices = speechSynthesis.getVoices();
+      const prefs = [
+        v => /samantha/i.test(v.name),
+        v => /fiona/i.test(v.name),
+        v => /karen/i.test(v.name),
+        v => /victoria/i.test(v.name),
+        v => /zira/i.test(v.name),
+        v => /hazel/i.test(v.name),
+        v => /female/i.test(v.name) && /en/i.test(v.lang),
+        v => /en[-_](gb|us|za|au)/i.test(v.lang) && !/male/i.test(v.name),
+        v => /en/i.test(v.lang)
+      ];
+      for(const fn of prefs){
+        const found = voices.find(fn);
+        if(found){selectedVoice=found;break;}
+      }
+      resolve();
+    };
+    if(speechSynthesis.getVoices().length) load();
+    else speechSynthesis.onvoiceschanged = load;
+    setTimeout(resolve, 2000);
+  });
+}
+
+function speak(text, rate=0.78){
+  return new Promise(resolve => {
+    speechSynthesis.cancel();
+    setTimeout(() => {
+      const u = new SpeechSynthesisUtterance(text);
+      if(selectedVoice) u.voice = selectedVoice;
+      u.rate = rate;
+      u.pitch = 1.2;
+      u.volume = 1;
+      const keepAlive = setInterval(() => {
+        if(!speechSynthesis.speaking){clearInterval(keepAlive);return;}
+        speechSynthesis.pause();speechSynthesis.resume();
+      }, 5000);
+      u.onend = () => {clearInterval(keepAlive);setTimeout(resolve,300)};
+      u.onerror = () => {clearInterval(keepAlive);setTimeout(resolve,300)};
+      speechSynthesis.speak(u);
+    }, 50);
+  });
+}
+
+function setBubble(text){ document.getElementById('speechText').textContent = text; }
+
+async function sayAndShow(text, rate=0.78){
+  await waitIfPaused();
+  setBubble(text);
+  await speak(text, rate);
+  await waitIfPaused();
+}
+
+// ══════════════════════════════════════════════════════
+// PAUSE / PLAY SYSTEM
+// ══════════════════════════════════════════════════════
+let isPaused = false;
+let pauseResolve = null;
+
+function togglePause(){
+  const btn = document.getElementById('pauseBtn');
+  const label = document.getElementById('pauseLabel');
+  if(isPaused){
+    isPaused = false;
+    btn.textContent = '⏸️';
+    btn.classList.remove('paused');
+    label.textContent = 'Pause';
+    speechSynthesis.resume();
+    if(pauseResolve){ pauseResolve(); pauseResolve = null; }
+  } else {
+    isPaused = true;
+    btn.textContent = '▶️';
+    btn.classList.add('paused');
+    label.textContent = 'Play';
+    speechSynthesis.pause();
+  }
+}
+
+function waitIfPaused(){
+  if(!isPaused) return Promise.resolve();
+  return new Promise(resolve => { pauseResolve = resolve; });
+}
+
+function sleep(ms){
+  return new Promise(resolve => {
+    let elapsed = 0;
+    const step = 100;
+    const tick = () => {
+      if(isPaused){
+        waitIfPaused().then(tick);
+        return;
+      }
+      elapsed += step;
+      if(elapsed >= ms) resolve();
+      else setTimeout(tick, step);
+    };
+    setTimeout(tick, step);
+  });
+}
+
+function setProgress(pct){ document.getElementById('progressBar').style.width = pct+'%'; }
+
+function showScene(id){
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scene-'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════════════
+// SOUNDS
+// ══════════════════════════════════════════════════════
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+function initAudio(){if(!audioCtx)audioCtx=new AudioCtx();}
+
+function playDing(){
+  if(!audioCtx)return;
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.connect(g);g.connect(audioCtx.destination);
+  o.frequency.setValueAtTime(880,audioCtx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1320,audioCtx.currentTime+0.1);
+  g.gain.setValueAtTime(0.3,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.4);
+  o.start();o.stop(audioCtx.currentTime+0.4);
+}
+
+function playBuzz(){
+  if(!audioCtx)return;
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.connect(g);g.connect(audioCtx.destination);o.type='square';
+  o.frequency.setValueAtTime(180,audioCtx.currentTime);
+  g.gain.setValueAtTime(0.2,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.3);
+  o.start();o.stop(audioCtx.currentTime+0.3);
+}
+
+function playTada(){
+  if(!audioCtx)return;
+  [523,659,784,1047].forEach((f,i)=>{
+    const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+    o.connect(g);g.connect(audioCtx.destination);o.frequency.value=f;
+    g.gain.setValueAtTime(0,audioCtx.currentTime+i*0.12);
+    g.gain.linearRampToValueAtTime(0.25,audioCtx.currentTime+i*0.12+0.05);
+    g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+i*0.12+0.5);
+    o.start(audioCtx.currentTime+i*0.12);o.stop(audioCtx.currentTime+i*0.12+0.5);
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// HAND EMOJI HELPER
+// ══════════════════════════════════════════════════════
+function fingerDisplay(n){
+  // Original emojis for 1,2,3,5 — clean SVG only for 4
+  if(n === 1) return '☝️';
+  if(n === 2) return '✌️';
+  if(n === 3) return '🤟';
+  if(n === 5) return '🖐️';
+  // 4 fingers: simple cartoon hand, 4 fingers up, no thumb visible
+  return `<svg viewBox="0 0 80 100" width="70" height="88" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="40" cy="68" rx="26" ry="24" fill="#FFCC80" stroke="#DDA95A" stroke-width="1.5"/>
+    <rect x="12" y="18" width="12" height="42" rx="6" fill="#FFCC80" stroke="#DDA95A" stroke-width="1.5"/>
+    <rect x="26" y="10" width="12" height="48" rx="6" fill="#FFCC80" stroke="#DDA95A" stroke-width="1.5"/>
+    <rect x="42" y="12" width="12" height="46" rx="6" fill="#FFCC80" stroke="#DDA95A" stroke-width="1.5"/>
+    <rect x="56" y="22" width="12" height="38" rx="6" fill="#FFCC80" stroke="#DDA95A" stroke-width="1.5"/>
+  </svg>`;
+}
+
+function buildHandHTML(n, label){
+  return `<div class="hand-card appear">
+    <div class="hand-emoji">${fingerDisplay(n)}</div>
+    <div class="hand-label">${label}</div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// QUIZ DATA & RESULTS
+// ══════════════════════════════════════════════════════
+const QUIZ_DATA = [
+  {num: 3, answer: 6},
+  {num: 5, answer: 10},
+  {num: 1, answer: 2},
+  {num: 4, answer: 8},
+  {num: 2, answer: 4}
+];
+
+const results = [];
+let totalCorrect = 0;
+const totalQuestions = 5;
+
+// ══════════════════════════════════════════════════════
+// BUILD QUIZ ROWS
+// ══════════════════════════════════════════════════════
+function buildQuizRows(){
+  const c = document.getElementById('quizRows');
+  c.innerHTML = '';
+  QUIZ_DATA.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.className = 'quiz-row';
+    row.id = 'quiz-row-'+i;
+    row.innerHTML = `
+      <span class="quiz-label">Double</span>
+      <span class="quiz-num">${item.num}</span>
+      <span class="quiz-label">=</span>
+      <input type="number" class="quiz-input" id="quiz-input-${i}"
+        inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off">
+      <button class="go-btn" id="quiz-go-${i}">Go</button>
+      <div class="try-again-hint" id="hint-${i}" style="display:none">Try again!</div>
+    `;
+    c.appendChild(row);
+  });
+}
+
+function handleQuiz(inputId, correctAnswer, index){
+  return new Promise(resolve => {
+    const input = document.getElementById(inputId);
+    const row = document.getElementById('quiz-row-'+index);
+    const goBtn = document.getElementById('quiz-go-'+index);
+    const hint = document.getElementById('hint-'+index);
+    let attempts = 0;
+    let resolved = false;
+
+    const submit = async () => {
+      if(resolved) return;
+      const val = input.value.trim();
+      if(val === '') return;
+      const numVal = parseInt(val);
+      attempts++;
+
+      if(numVal === correctAnswer){
+        resolved = true;
+        input.disabled = true;
+        goBtn.disabled = true;
+        input.classList.remove('wrong');
+        input.classList.add('correct');
+        row.classList.add('correct');
+        hint.style.display = 'none';
+        playDing();
+        totalCorrect++;
+        results.push({num: QUIZ_DATA[index].num, answer: correctAnswer, given: numVal, correct: true, attempts});
+        await sleep(400);
+        resolve(true);
+      } else if(attempts >= 2){
+        resolved = true;
+        input.disabled = true;
+        goBtn.disabled = true;
+        input.classList.add('wrong');
+        row.classList.add('wrong');
+        hint.style.display = 'none';
+        playBuzz();
+        results.push({num: QUIZ_DATA[index].num, answer: correctAnswer, given: numVal, correct: false, attempts});
+        await sleep(400);
+        resolve(false);
+      } else {
+        input.classList.add('wrong');
+        playBuzz();
+        hint.style.display = 'block';
+        input.value = '';
+        setTimeout(() => {
+          input.classList.remove('wrong');
+          input.focus();
+        }, 600);
+      }
+    };
+
+    input.addEventListener('keydown', (e) => { if(e.key === 'Enter') submit(); });
+    goBtn.addEventListener('click', submit);
+    input.focus();
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// MAIN LESSON FLOW
+// ══════════════════════════════════════════════════════
+async function beginLesson(){
+  initAudio();
+  await loadVoices();
+
+  // Show pause button
+  document.getElementById('pauseBtn').style.display = 'block';
+  document.getElementById('pauseLabel').style.display = 'block';
+
+  // ─── INTRO ───
+  await sayAndShow("Hello there! I am Miss Numby, and I am so happy to see you today! We are going to learn something really exciting. We are going to learn about doubling!");
+  await sleep(1000);
+
+  await sayAndShow("Mommy or Daddy, please sit with your child and help them if they need it. You can press the pause button at any time if your child needs more time to understand something. Let's go!");
+  await sleep(1500);
+
+  // ─── EXPLAIN DOUBLING WITH SWEETS ───
+  setProgress(5);
+  showScene('demo');
+  document.getElementById('demoTitle').textContent = "What is Doubling?";
+  await sleep(500);
+
+  await sayAndShow("So, what does doubling mean? Doubling means when you make an identical set. And the word identical means... exactly the same!");
+  await sleep(1200);
+
+  // Show sweet bags
+  document.getElementById('demoArea').innerHTML = `
+    <div class="sweets-demo">
+      <div class="sweet-bag">
+        <div class="sweet-icons">🍬🍬🍬</div>
+        <div class="sweet-bag-label">3 sweets</div>
+      </div>
+    </div>
+    <p style="font-family:'Fredoka One',cursive;color:#5D4037;font-size:16px;margin-top:12px">Here is a bag of sweets...</p>
+  `;
+  await sayAndShow("Look! Here is a bag with 3 sweets in it.");
+  await sleep(1500);
+
+  // Show identical bag
+  document.getElementById('demoArea').innerHTML = `
+    <div class="sweets-demo">
+      <div class="sweet-bag">
+        <div class="sweet-icons">🍬🍬🍬</div>
+        <div class="sweet-bag-label">3 sweets</div>
+      </div>
+      <div class="identical-arrow">=</div>
+      <div class="sweet-bag">
+        <div class="sweet-icons">🍬🍬🍬</div>
+        <div class="sweet-bag-label">3 sweets</div>
+      </div>
+    </div>
+    <p style="font-family:'Fredoka One',cursive;color:#E65100;font-size:18px;margin-top:12px">They are IDENTICAL — exactly the same!</p>
+  `;
+  await sayAndShow("Now here is another bag with 3 sweets. Look! They are identical! Identical means they are exactly the same. When you match them, they are exactly the same! That is what doubling is. You make an identical set!");
+  await sleep(2000);
+
+  // ─── HAND DEMOS ───
+  const demos = [
+    {num: 2, text_intro: "Now, let's use our hands to practise doubling!", text_show: "Show 2 fingers on your one hand. Go on, hold up 2 fingers!", text_double: "Now show 2 fingers on your other hand as well. You have 2 fingers here, and 2 fingers here.", text_result: "When we double 2, we get 4! 2 and 2 make 4!"},
+    {num: 1, text_intro: "Now let's try doubling 1!", text_show: "Show 1 finger on your one hand.", text_double: "Now show 1 finger on your other hand as well.", text_result: "When we double 1, we get 2! 1 and 1 make 2!"},
+    {num: 3, text_intro: "Let's try 3 now!", text_show: "Show 3 fingers on your one hand. That's it, 3 fingers!", text_double: "Now show 3 fingers on your other hand as well.", text_result: "When we double 3, we get 6! 3 and 3 make 6!"},
+    {num: 4, text_intro: "Now let's double 4!", text_show: "Show 4 fingers on your one hand. Hold up 4 fingers!", text_double: "Now show 4 fingers on your other hand too.", text_result: "When we double 4, we get 8! 4 and 4 make 8!"},
+    {num: 5, text_intro: "And now the big one! Let's double 5!", text_show: "Show 5 fingers on one hand. Open your whole hand!", text_double: "Now open your other hand too. 5 fingers on each hand!", text_result: "When we double 5, we get 10! 5 and 5 make 10!"}
+  ];
+
+  for(let d = 0; d < demos.length; d++){
+    const item = demos[d];
+    const pct = 10 + (d * 14);
+    setProgress(pct);
+
+    document.getElementById('demoTitle').textContent = `Double ${item.num}`;
+
+    // Intro
+    document.getElementById('demoArea').innerHTML = '';
+    await sayAndShow(item.text_intro);
+    await sleep(800);
+
+    // Show first hand
+    document.getElementById('demoArea').innerHTML = `
+      <div class="hand-display">
+        ${buildHandHTML(item.num, item.num + ' finger' + (item.num > 1 ? 's' : ''))}
+      </div>
+    `;
+    await sayAndShow(item.text_show);
+    await sleep(2000);
+
+    // Show second hand
+    document.getElementById('demoArea').innerHTML = `
+      <div class="hand-display">
+        ${buildHandHTML(item.num, item.num + ' finger' + (item.num > 1 ? 's' : ''))}
+        <div class="equals-sign">+</div>
+        ${buildHandHTML(item.num, item.num + ' finger' + (item.num > 1 ? 's' : ''))}
+      </div>
+    `;
+    await sayAndShow(item.text_double);
+    await sleep(2000);
+
+    // Show result
+    document.getElementById('demoArea').innerHTML = `
+      <div class="hand-display">
+        ${buildHandHTML(item.num, item.num + '')}
+        <div class="equals-sign">+</div>
+        ${buildHandHTML(item.num, item.num + '')}
+        <div class="equals-sign">=</div>
+        <div class="result-number">${item.num * 2}</div>
+      </div>
+    `;
+    playDing();
+    await sayAndShow(item.text_result);
+    await sleep(2000);
+  }
+
+  // ─── QUIZ ───
+  setProgress(80);
+  showScene('quiz');
+  buildQuizRows();
+  await sleep(400);
+
+  await sayAndShow("Wonderful! Now let's see if you can do it by yourself! Use your fingers like we practised. Put up the fingers on one hand, then put up the same fingers on the other hand, and count them all together!");
+  await sleep(1500);
+
+  await sayAndShow("Mommy or Daddy, please make sure your child uses their fingers correctly. If the answer is wrong, they get one more chance to try again. Let's go!");
+  await sleep(1000);
+
+  for(let i = 0; i < QUIZ_DATA.length; i++){
+    const item = QUIZ_DATA[i];
+    if(i > 0) await sleep(200);
+    await waitIfPaused();
+    setBubble(`What is double ${item.num}? Use your fingers and type the answer!`);
+    const correct = await handleQuiz('quiz-input-'+i, item.answer, i);
+    if(correct){
+      await sayAndShow(`Well done! Double ${item.num} is ${item.answer}! You got it!`);
+    } else {
+      await sayAndShow(`Double ${item.num} is ${item.answer}. ${item.num} and ${item.num} make ${item.answer}. Keep practising!`);
+    }
+  }
+
+  // ─── RESULTS ───
+  setProgress(100);
+  showScene('results');
+  showResults();
+  playTada();
+  launchConfetti();
+
+  // Hide pause button
+  document.getElementById('pauseBtn').style.display = 'none';
+  document.getElementById('pauseLabel').style.display = 'none';
+
+  await sayAndShow("Congratulations! You have finished the doubling lesson! Let's see how you did!");
+  await sleep(2000);
+
+  const wrongCount = results.filter(r => !r.correct).length;
+  if(wrongCount > 0){
+    await sayAndShow("Mommy or Daddy, please go through the answers that were wrong with your child. Practise doubling with real objects like toys, sweets, or buttons. Make two groups that are exactly the same and count them together. There will be another opportunity to practise. Thank you for helping your child today!");
+  } else {
+    await sayAndShow("What an amazing job! You got everything right! Mommy or Daddy, your child has done incredible work today. Keep practising doubling with everyday objects to keep this skill sharp. See you next time!");
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════════════════
+function showResults(){
+  const pct = Math.round((totalCorrect / totalQuestions) * 100);
+  document.getElementById('scoreDisplay').textContent = `${totalCorrect} / ${totalQuestions} (${pct}%)`;
+
+  let html = '<p style="font-family:Fredoka One,cursive;color:#E65100;margin-top:8px">Double these numbers:</p>';
+  results.forEach(r => {
+    const cls = r.correct ? 'result-correct' : 'result-wrong';
+    const icon = r.correct ? '✅' : '❌';
+    const attText = r.attempts > 1 ? ` (${r.attempts} attempts)` : '';
+    html += `<p class="${cls}">${icon} Double ${r.num} = your answer: ${r.given} ${r.correct ? '(Correct!)' : `(Wrong — correct answer: ${r.answer})`}${attText}</p>`;
+  });
+
+  document.getElementById('resultsDetail').innerHTML = html;
+
+  const wrong = results.filter(r => !r.correct);
+  let parentMsg = '';
+  if(wrong.length === 0){
+    parentMsg = `<p><strong>Amazing!</strong> Your child got every answer correct! They understand the concept of doubling well.</p>
+    <p style="margin-top:8px">Keep practising doubling with everyday objects — shoes (2 and 2 make 4!), hands (5 and 5 make 10!), eyes (1 and 1 make 2!). Well done to both of you!</p>`;
+  } else {
+    parentMsg = `<p><strong>Dear Parent,</strong></p>
+    <p style="margin-top:6px">Please go through the answers marked with ❌ with your child. Use real objects to practise:</p>
+    <p style="margin-top:6px">Put out some buttons or sweets. Make one group, then make an <strong>identical</strong> group right next to it. Count them all together. That is doubling!</p>
+    <p style="margin-top:6px">There will be another opportunity to practise. Thank you for supporting your child's learning!</p>`;
+  }
+  document.getElementById('parentMessage').innerHTML = parentMsg;
+}
+
+// ══════════════════════════════════════════════════════
+// CONFETTI
+// ══════════════════════════════════════════════════════
+function launchConfetti(){
+  const cols=['#FF8F00','#66BB6A','#42A5F5','#EF5350','#AB47BC','#FFD54F','#EC407A'];
+  const wrap=document.createElement('div');wrap.className='confetti-wrap';
+  document.body.appendChild(wrap);
+  for(let i=0;i<65;i++){
+    const p=document.createElement('div');p.style.cssText=`
+      position:absolute;left:${Math.random()*100}%;top:-20px;
+      width:${6+Math.random()*10}px;height:${6+Math.random()*10}px;
+      background:${cols[i%cols.length]};border-radius:${Math.random()>.5?'50%':'3px'};
+      animation:confFall ${2+Math.random()*2}s linear ${Math.random()*1.5}s forwards;
+    `;wrap.appendChild(p);
+  }
+  setTimeout(()=>wrap.remove(),5500);
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+async function initAfterPassword(){
+  await loadVoices();
+  setBubble("Hello! Press 'Let's Start' when you are ready!");
+  await speak("Hello! Press Let's Start when you are ready!", 0.78);
+}
+</script>
+
+
+<div id="screenity-ui"><div class="screenity-shadow-dom"><div><div class="screenity-scrollbar"></div><div class="screenity-scrollbar"></div></div><style type="text/css">
+			#screenity-ui, #screenity-ui div {
+				background-color: unset;
+				padding: unset;
+				width: unset;
+				box-shadow: unset;
+				display: unset;
+				margin: unset;
+				border-radius: unset;
+			}
+			.screenity-outline {
+				position: absolute;
+				z-index: 99999999999;
+				border: 2px solid #3080F8;
+				outline-offset: -2px;
+				pointer-events: none;
+				border-radius: 5px!important;
+			}
+		.screenity-blur {
+			filter: blur(10px)!important;
+		}
+			.screenity-shadow-dom * {
+				transition: unset;
+			}
+			.screenity-shadow-dom .TooltipContent {
+  border-radius: 30px!important;
+	background-color: #29292F!important;
+  padding: 10px 15px!important;
+  font-size: 12px;
+	margin-bottom: 10px!important;
+	bottom: 100px;
+  line-height: 1;
+	font-family: 'Satoshi-Medium', sans-serif;
+	z-index: 99999999!important;
+  color: #FFF;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px!important;
+  user-select: none;
+	transition: opacity 0.3 ease-in-out;
+  will-change: transform, opacity;
+	animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.screenity-shadow-dom .hide-tooltip {
+	display: none!important;
+}
+
+.screenity-shadow-dom .tooltip-tall {
+	margin-bottom: 20px;
+}
+
+.screenity-shadow-dom .tooltip-small {
+	margin-bottom: 5px;
+}
+
+.screenity-shadow-dom .TooltipContent[data-state='delayed-open'][data-side='top'] {
+	animation-name: screenity-slideDownAndFade;
+}
+.screenity-shadow-dom .TooltipContent[data-state='delayed-open'][data-side='right'] {
+  animation-name: screenity-slideLeftAndFade;
+}
+.screenity-shadow-dom.TooltipContent[data-state='delayed-open'][data-side='bottom'] {
+  animation-name: screenity-slideUpAndFade;
+}
+.screenity-shadow-dom.TooltipContent[data-state='delayed-open'][data-side='left'] {
+  animation-name: screenity-slideRightAndFade;
+}
+
+@keyframes screenity-slideUpAndFade {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes screenity-slideRightAndFade {
+  from { opacity: 0; transform: translateX(-2px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes screenity-slideDownAndFade {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes screenity-slideLeftAndFade {
+  from { opacity: 0; transform: translateX(2px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+#screenity-ui [data-radix-popper-content-wrapper] { z-index: 999999999999!important; }
+
+.screenity-shadow-dom .CanvasContainer {
+	position: fixed;
+	pointer-events: all!important;
+	top: 0px!important;
+	left: 0px!important;
+	z-index: 99999999999!important;
+}
+.screenity-shadow-dom .canvas {
+	position: fixed;
+	top: 0px!important;
+	left: 0px!important;
+	z-index: 99999999999!important;
+	background: transparent!important;
+}
+.screenity-shadow-dom .canvas-container {
+	top: 0px!important;
+	left: 0px!important;
+	z-index: 99999999999;
+	position: fixed!important;
+	background: transparent!important;
+}
+
+.ScreenityDropdownMenuContent {
+	z-index: 99999999999!important;
+  min-width: 200px;
+  background-color: white;
+  margin-top: 4px;
+  margin-right: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  border-radius: 15px;
+  font-family: 'Satoshi-Medium', sans-serif;
+  color: #29292F;
+  box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35),
+    0px 10px 20px -15px rgba(22, 23, 24, 0.2);
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+.ScreenityDropdownMenuContent[data-side="top"] {
+  animation-name: screenity-slideDownAndFade;
+}
+.ScreenityDropdownMenuContent[data-side="right"] {
+  animation-name: screenity-slideLeftAndFade;
+}
+.ScreenityDropdownMenuContent[data-side="bottom"] {
+  animation-name: screenity-slideUpAndFade;
+}
+.ScreenityDropdownMenuContent[data-side="left"] {
+  animation-name: screenity-slideRightAndFade;
+}
+.ScreenityItemIndicator {
+  position: absolute;
+  right: 12px;
+  width: 18px;
+  height: 18px;
+  background: #3080F8;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.ScreenityDropdownMenuItem,
+.ScreenityDropdownMenuRadioItem {
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 5px;
+  position: relative;
+  padding-left: 22px;
+  padding-right: 22px;
+  user-select: none;
+  outline: none;
+}
+.ScreenityDropdownMenuItem:hover {
+    background-color: #F6F7FB !important;
+    cursor: pointer;
+}
+.ScreenityDropdownMenuItem[data-disabled] {
+  color: #6E7684 !important;
+  cursor: not-allowed;
+  background-color: #F6F7FB !important;
+}
+
+</style></div></div></body></html>
